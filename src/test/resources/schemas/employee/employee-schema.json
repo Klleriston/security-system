@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["documentId", "role"],
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "documentId": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["POLICE_OFFICER", "ADMIN"]
+    },
+    "incidents": {
+      "type": ["array", "null"]
+    }
+  }
+}

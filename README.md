@@ -1,75 +1,125 @@
 # FIAP Security System API
 
-## Overview
+## Visão Geral
+A API do FIAP Security System fornece um conjunto de endpoints para gerenciar funcionários, lidar com autenticação de usuários e relatar incidentes de segurança. A API é destinada ao uso em sistemas de segurança onde incidentes precisam ser registrados, usuários gerenciados e acesso baseado em funções é aplicado.
 
-The FIAP Security System API provides a set of endpoints to manage employees, handle user authentication, and report security incidents. The API is intended for use in security systems where incidents need to be logged, users managed, and role-based access is enforced.
+## Funcionalidades
+* **Gerenciamento de Funcionários**: Criar, atualizar e recuperar registros de funcionários.
+* **Autenticação de Usuários**: Registrar novos usuários e gerenciar sessões de login.
+* **Gerenciamento de Incidentes**: Criar, atualizar, excluir e recuperar incidentes de segurança.
 
-## Features
+## Endpoints da API
 
-- **Employee Management**: Create, update, and retrieve employee records.
-- **User Authentication**: Register new users and handle login sessions.
-- **Incident Management**: Create, update, delete, and retrieve security incidents.
+### 1. Gerenciamento de Funcionários
+* **Criar Usuário**: `POST /api/employees`
+  * Adiciona um novo funcionário ao sistema.
+* **Obter Todos os Usuários**: `GET /api/employees`
+  * Recupera todos os registros de funcionários.
+* **Obter Funcionário por ID**: `GET /api/employees/{id}`
+  * Recupera os detalhes de um funcionário específico.
+* **Obter Funcionários por Função**: `GET /api/employees/role/{role}`
+  * Recupera funcionários com base em sua função.
 
-## API Endpoints
+### 2. Autenticação
+* **Registrar**: `POST /api/auth/register`
+  * Registra um novo usuário no sistema.
+* **Login**: `POST /api/auth/login`
+  * Autentica um usuário existente e fornece um token.
 
-### 1. Employee Management
+### 3. Gerenciamento de Incidentes
+* **Obter Todos os Incidentes**: `GET /api/incidents`
+  * Recupera todos os incidentes relatados.
+* **Criar Incidente**: `POST /api/incidents`
+  * Relata um novo incidente.
+* **Obter Incidente por ID**: `GET /api/incidents/{id}`
+  * Recupera um incidente específico pelo seu ID.
+* **Obter Incidentes por Status**: `GET /api/incidents/status/{status}`
+  * Recupera incidentes filtrados por seu status.
+* **Atualizar Status do Incidente**: `PATCH /api/incidents/{id}/status`
+  * Atualiza o status de um incidente específico.
+* **Excluir Incidente**: `DELETE /api/incidents/{id}`
+  * Exclui um incidente específico do sistema.
 
-- **Create User**: `POST /api/employees`
-  - Adds a new employee to the system.
-- **Get All Users**: `GET /api/employees`
-  - Retrieves all employee records.
-- **Get Employee by ID**: `GET /api/employees/{id}`
-  - Retrieves the details of a specific employee.
-- **Get Employees by Role**: `GET /api/employees/role/{role}`
-  - Retrieves employees based on their role.
+## Começando
 
-### 2. Authentication
+### Pré-requisitos
+* **Java 11+**: O backend é construído usando Java, requerendo versão 11 ou posterior.
+* **Docker**: Usado para containerização e implantação fácil.
 
-- **Register**: `POST /api/auth/register`
-  - Registers a new user in the system.
-- **Login**: `POST /api/auth/login`
-  - Authenticates an existing user and provides a token.
+### Executando a API
+1. Clone o repositório.
+2. Certifique-se de que o Docker esteja instalado e em execução.
+3. Use o Docker Compose para construir e iniciar a aplicação:
+`docker-compose up --build`
 
-### 3. Incident Management
+4. A API estará disponível em `http://localhost:8080`.
 
-- **Get All Incidents**: `GET /api/incidents`
-  - Retrieves all reported incidents.
-- **Create Incident**: `POST /api/incidents`
-  - Reports a new incident.
-- **Get Incident by ID**: `GET /api/incidents/{id}`
-  - Retrieves a specific incident by its ID.
-- **Get Incidents by Status**: `GET /api/incidents/status/{status}`
-  - Retrieves incidents filtered by their status.
-- **Update Incident Status**: `PATCH /api/incidents/{id}/status`
-  - Updates the status of a specific incident.
-- **Delete Incident**: `DELETE /api/incidents/{id}`
-  - Deletes a specific incident from the system.
+## Uso
+Você pode usar o Postman para interagir com os endpoints. Uma coleção (`FIAP.postman_collection.json`) é fornecida para testes fáceis. Importe-a no Postman e execute as requisições diretamente.
 
-## Getting Started
+## Testes
 
-### Prerequisites
+### Executando Testes
+O projeto inclui testes unitários e testes de integração. Você pode executar todos os testes usando Maven:
+`mvn test`
 
-- **Java 11+**: The backend is built using Java, requiring version 11 or later.
-- **Docker**: Used for containerization and easy deployment.
 
-### Running the API
+### Tipos de Testes
+- **Testes Unitários**: Testam componentes individuais isoladamente
+- **Testes de API**: Testam os endpoints da API com REST Assured
+- **Testes BDD**: Testes baseados em desenvolvimento orientado a comportamento com Cucumber
 
-1. Clone the repository.
-2. Ensure Docker is installed and running.
-3. Use Docker Compose to build and start the application:
-   ```bash
-   docker-compose up --build
-   ```
-4. The API will be available at `http://localhost:8080`.
+### Documentação de Testes
+O conjunto de testes inclui:
+- Arquivos de feature do Cucumber que descrevem cenários de comportamento
+- Testes de API que validam os endpoints REST
+- Validação de esquema JSON para respostas da API
 
-## Usage
+## Configuração do Banco de Dados
 
-You can use Postman to interact with the endpoints. A collection (`FIAP.postman_collection.json`) is provided for easy testing. Import it into Postman and run the requests directly.
+A aplicação está configurada para usar Oracle como seu banco de dados. A configuração padrão é:
+```
+spring.datasource.url=jdbc:oracle:thin:@localhost:9445/XEPDB1
+spring.datasource.username=system
+spring.datasource.password=password
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.flyway.url=jdbc:oracle:thin:@localhost:9445/XEPDB1
+spring.flyway.user=system
+spring.flyway.password=password
+spring.flyway.enabled=false
+```
 
-## Technologies Used
+## Modelos de Dados
 
-- **Spring Boot**: For developing the REST API.
-- **PostgreSQL**: As the primary database for storing user and incident data.
-- **Docker**: For containerization.
-- **Postman**: To test and document API endpoints.
+### Incidentes
+Incidentes podem ter os seguintes status:
+- `SOLVED` (Resolvido)
+- `PENDING` (Pendente)
+- `UNSOLVED` (Não Resolvido)
 
+E os seguintes tipos:
+- `FRAUD` (Fraude)
+- `ROBBERY` (Roubo)
+- `THEFT` (Furto)
+- `KIDNAPPING` (Sequestro)
+
+### Funcionários
+Funcionários podem ter as seguintes funções:
+- `POLICE_OFFICER` (Policial)
+- `ADMIN` (Administrador)
+
+## Tecnologias Utilizadas
+* **Spring Boot**: Para desenvolvimento da API REST.
+* **PostgreSQL**: Como banco de dados primário para armazenar dados de usuários e incidentes.
+* **Oracle**: Configuração alternativa de banco de dados fornecida.
+* **Docker**: Para containerização.
+* **Postman**: Para testar e documentar endpoints da API.
+* **JUnit 5**: Para testes unitários e de integração.
+* **Cucumber**: Para testes de desenvolvimento orientado a comportamento.
+* **REST Assured**: Para testes de API.
+* **Flyway**: Para migrações de banco de dados.
+
+## Estrutura do Repositório
+O repositório principal está disponível em: [https://github.com/Klleriston/security-system/tree/master](https://github.com/Klleriston/security-system/tree/master)

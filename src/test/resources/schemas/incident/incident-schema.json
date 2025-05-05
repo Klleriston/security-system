@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["id", "title", "status", "type", "description", "localization", "responsible"],
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["SOLVED", "PENDING", "UNSOLVED"]
+    },
+    "type": {
+      "type": "string",
+      "enum": ["FRAUD", "ROBBERY", "THEFT", "KIDNAPPING"]
+    },
+    "description": {
+      "type": "string"
+    },
+    "localization": {
+      "type": "string"
+    },
+    "responsible": {
+      "type": "object",
+      "required": ["id", "documentId", "role"],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "documentId": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["POLICE_OFFICER", "ADMIN"]
+        }
+      }
+    }
+  }
+}

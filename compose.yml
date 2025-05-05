@@ -20,14 +20,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 12
-
-  app:
-    container_name: security-system-app
-    image: fabiodinizdev/security-system:latest
-    ports:
-    - "8080:8080"
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_DRIVERCLASSNAME: oracle.jdbc.OracleDriver
